@@ -3,6 +3,7 @@ module github.com/rmera/heimdall
 go 1.22.0
 
 require (
+	github.com/rmera/chemlearn v0.0.0-20240720225553-f25e68f2bf49
 	github.com/rmera/gfe v0.0.1
 	github.com/rmera/gochem v0.7.1
 	github.com/rmera/libsvm-go v0.0.0-20240626051442-14b6fec349c7
@@ -17,3 +18,5 @@ require (
 )
 
 replace github.com/rmera/gfe => /wrk/programs/github.com/rmera/gfe
+
+replace github.com/rmera/chemlearn => /wrk/programs/github.com/rmera/learn
