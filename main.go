@@ -27,16 +27,16 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
-	"math"
 	"os"
 	"strings"
 
+	learn "github.com/rmera/chemlearn"
 	fe "github.com/rmera/gfe"
 	chem "github.com/rmera/gochem"
-	libSvm "github.com/rmera/libsvm-go"
 )
 
 // Global variables... Sometimes, you gotta use'em
@@ -67,25 +67,23 @@ func PrintV(level int, d ...interface{}) {
 
 }
 
-//gets a file's extension, i.e. whatever its written after the last point/dot in the filename
+// gets a file's extension, i.e. whatever its written after the last point/dot in the filename
 func getExtension(name string) string {
 	fs := strings.Split(name, ".")
 	return strings.ToLower(fs[len(fs)-1])
 }
 
 var PATH = os.Getenv("HEIMROOT")
-var MODEL string = PATH + "/RM1.svm.model"
-var RANGE string = PATH + "/RM1.svm.range"
-
-var KEPT []string = []string{"dipolenorm", "chargevar", "hardness", "planarity", "elongation", "sasa"}
+var MODEL string = PATH + "/xgbmodel1.json"
+var KEYS []string = []string{"fukui+var", "c6", "c6var", "charge", "chargevar", "dipolenorm", "dipolex", "dipoley", "dipolez", "elongation", "fod", "fodvar", "fukui+", "fukui-", "fukui-var", "fukui0", "fukui0var", "hardness", "homolumogap", "planarity", "sasa"}
 
 const DIELECTRIC float64 = 80.0
 const SEPARATOR string = ","
 
 var LMAP map[int]string = map[int]string{
-	1: "Negative",
-	2: "Inverted",
-	3: "Positive",
+	0: "Negative",
+	1: "Inverted",
+	2: "Positive",
 }
 
 func main() {
@@ -150,46 +148,26 @@ func main() {
 
 	sa := fe.SASA(mol, beads, 1)
 	fmap.Join(sa)
-	PrintV(4, "Before Deleting Items", fmap.String())
-
-	deleted := fe.ExcludeKeys(fmap.SortedKeys(), KEPT)
-
-	PrintV(4, "Keys for deletion", deleted) /////////////
-	fmap.DeleteFeatures(deleted)
-
-	const TMPNAME string = "problem.tmp"
-	tmp, err := os.Create(TMPNAME)
-	PrintV(4, "Final map used:", fmap.String())
-	floats, _, _ := fmap.IthVector(0, KEPT) //we don't care about labels here.
-	str := fe.Floats2SVM(floats, 0)
-	tmp.WriteString(str)
-	tmp.Close()
-	PrintV(3, "The SVM string", str)
-	model := libSvm.NewModelFromFile(MODEL)
-	PrintV(3, "And it keys", fe.Strings2SVM(KEPT))
-	model.Probability(true)
-	minmax, lu, err := libSvm.ReadRangesFromFile(RANGE)
+	//	fmt.Println(fmap.String(), fmap.SortedKeys(), KEYS) ////
+	floats, _, _ := fmap.IthVector(0, KEYS) //we don't care about labels here.
+	//	if err != nil {
+	//		panic(err)
+	//	}
+	f, err := os.Open("xgbmodel1.json")
+	defer f.Close()
 	if err != nil {
-		log.Fatalf("Unable to read from Scaling file %s. Error: %v", RANGE, err)
+		panic(err)
 	}
-	param := libSvm.NewParameter()
-	prob, err := libSvm.NewProblem(TMPNAME, param)
+	b := bufio.NewReader(f)
+	m, err := learn.UnJSONMultiClass(b)
 	if err != nil {
-		log.Fatalf("Unable to read model from tmp file %s. Error: %v", RANGE, err)
+		panic(err)
 	}
-	PrintV(3, "Scaling Factors", minmax, lu)
-	label, line := prob.GetLine()
-	line, err = fe.ScaleMap(line, minmax, lu...)
-	PrintV(4, "Label read:", label)
-	PrintV(4, "Data read", line)
-	returnValue, vals := model.PredictValues(line)
-	v32 := vals[0]
-	v31 := vals[1]
-	v21 := vals[1]
-	fmt.Printf("%s is predicted to display %s solvatochromism\n", geoname, LMAP[int(math.Round(returnValue))])
-	PrintV(2, "Decision values:")
-	PrintV(2, fmt.Sprintf("positive/inverted: %3.5f, positive/negative: %3.5f inverted/negative: %3.5f", v32, v31, v21))
-	PrintV(2, "Positive values favor the first of the 2 categories, in each case, while negative values favor the second one.")
+	probs := m.PredictSingle(floats)
+	class := m.PredictSingleClass(floats)
+	fmt.Printf("%s is predicted to display %s solvatochromism\n", geoname, LMAP[class])
+	PrintV(2, "Probabilities:")
+	PrintV(2, fmt.Sprintf("positive/inverted: %3.5f, positive/negative: %3.5f inverted/negative: %3.5f", probs[2], probs[1], probs[0]))
 
 	//	fmt.Println(LMAP[int(math.Round(returnValue))], probvalues)
 }
