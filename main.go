@@ -34,7 +34,7 @@ import (
 	"os"
 	"strings"
 
-	learn "github.com/rmera/chemlearn"
+	"github.com/rmera/boo"
 	fe "github.com/rmera/gfe"
 	chem "github.com/rmera/gochem"
 )
@@ -87,7 +87,6 @@ var LMAP map[int]string = map[int]string{
 }
 
 func main() {
-
 	charge := flag.Int("c", 0, "Charge of the molecule")
 	multi := flag.Int("m", 1, "Charge of the molecule")
 	verbose := flag.Int("v", 1, "Level of verbosity")
@@ -135,17 +134,14 @@ func main() {
 		ats = append(ats, i)
 		w = append(w, 1.0)
 	}
-	beads = []*fe.Bead{&fe.Bead{Indexes: ats, Weights: w}}
-
+	beads = []*fe.Bead{{Indexes: ats, Weights: w}}
 	o := &fe.XTBPOptions{Vari: true, Dielectric: DIELECTRIC, CFOD: false}
 	xtblines := fe.XTBProps(mol.Coords[0], mol, beads, o)
 	fmap.Join(xtblines)
-
 	hardlines := fe.XTBHardness(mol.Coords[0], mol, beads, DIELECTRIC)
 	fmap.Join(hardlines)
 	shapes := fe.ShapeProps(mol.Coords[0], mol, beads)
 	fmap.Join(shapes)
-
 	sa := fe.SASA(mol, beads, 1)
 	fmap.Join(sa)
 	//	fmt.Println(fmap.String(), fmap.SortedKeys(), KEYS) ////
@@ -159,7 +155,7 @@ func main() {
 		panic(err)
 	}
 	b := bufio.NewReader(f)
-	m, err := learn.UnJSONMultiClass(b)
+	m, err := boo.UnJSONMultiClass(b)
 	if err != nil {
 		panic(err)
 	}
