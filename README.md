@@ -2,9 +2,7 @@
 
 A Chemistry-informed machine-learning classifier for solvatochromic phenolates.
 
-Heimdall uses chemistry-derived features obtained with [goChem](https://github.com/rmera/gochem) and [xtb](https://github.com/grimme-lab/xtb).
-and a RDF-kernel Support Vector Machine, with a [locally modified](https://github.com/rmera/libsvm-go) version of the [Go implementation](https://github.com/ewalker544/libsvm-go) of [LIBSVM](https://dl.acm.org/doi/10.1145/1961189.1961199) to predict, based on the cartesian coordinates of its atoms, whether a phenolate-based solvatochromic dye will display positive, negative or
-inverted solvatochromism.
+Heimdall uses chemistry-derived features obtained with [goChem](https://github.com/rmera/gochem) and [xtb](https://github.com/grimme-lab/xtb). with our own (partial) [implementation](https://github.com/rmera/boo) of [XGBoost](https://dl.acm.org/doi/10.1145/2939672.2939785) to predict, based on the cartesian coordinates of its atoms, whether a phenolate-based solvatochromic dye will display positive, negative or inverted solvatochromism.
 
 
 
