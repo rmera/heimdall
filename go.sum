@@ -2,13 +2,11 @@ github.com/gonum/floats v0.0.0-20181209220543-c233463c7e82 h1:EvokxLQsaaQjcWVWSV
 github.com/gonum/floats v0.0.0-20181209220543-c233463c7e82/go.mod h1:PxC8OnwL11+aosOB5+iEPoV3picfs8tUpkVd0pDo+Kg=
 github.com/gonum/internal v0.0.0-20181124074243-f884aa714029 h1:8jtTdc+Nfj9AR+0soOeia9UZSvYBvETVHZrugUowJ7M=
 github.com/gonum/internal v0.0.0-20181124074243-f884aa714029/go.mod h1:Pu4dmpkhSyOzRwuXkOgAvijx4o+4YMUJJo9OvPYMkks=
-github.com/rmera/gochem v0.7.1 h1:5lfBBZ+kdAwbsE3jzLKr//OL3tu9AnDJ9gxo8V6nOjA=
-github.com/rmera/gochem v0.7.1/go.mod h1:l1YWf1VhbI38YAh1fSLRJIsdLODmjiVIaIp8fK8Nqo4=
 github.com/rmera/scu v0.2.0 h1:cicjO2l/7vppuPfi5XQVqYjYHZA+8cWkcS+5mxD7T3U=
 github.com/rmera/scu v0.2.0/go.mod h1:bud3+C6l94vgt3UEQwOd5Oo7tlcEwEojMw2G8C9jyJs=
 github.com/skelterjohn/go.matrix v0.0.0-20130517144113-daa59528eefd h1:+ZLYzP9SYC3WU9buyb9H0l9DQxqVFOCkDG8QnNBMAlA=
 github.com/skelterjohn/go.matrix v0.0.0-20130517144113-daa59528eefd/go.mod h1:x7ui0Rh4QxcWEOgIfa3cr9q4W/wyLTDdzISxBmLVeX8=
 golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa h1:FRnLl4eNAQl8hwxVVC17teOw8kdjVDVAiFMtgUdTSRQ=
 golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa/go.mod h1:zk2irFbV9DP96SEBUUAy67IdHUaZuSnrz1n472HUCLE=
-gonum.org/v1/gonum v0.15.0 h1:2lYxjRbTYyxkJxlhC+LvJIx3SsANPdRybu1tGj9/OrQ=
-gonum.org/v1/gonum v0.15.0/go.mod h1:xzZVBJBtS+Mz4q0Yl2LJTk+OxOg4jiXZ7qBoM0uISGo=
+gonum.org/v1/gonum v0.15.1 h1:FNy7N6OUZVUaWG9pTiD+jlhdQ3lMP+/LcTpJ6+a8sQ0=
+gonum.org/v1/gonum v0.15.1/go.mod h1:eZTZuRFrzu5pcyjN5wJhcIhnUdNijYxX1T2IcrOGY0o=
